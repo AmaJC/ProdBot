@@ -13,7 +13,7 @@ var Botkit = require('botkit');
 var controller = Botkit.slackbot();
 
 var bot = controller.spawn({
-	token: "xoxb-101465156790-IYYexImumyI7H3HtOymXjaWP"
+	token: "xoxb-101465156790-HbfATcOVzJHOwK2hEYzuQh1G"
 })
 
 const MAX_QUERY_ITEMS = 25;
