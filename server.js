@@ -47,8 +47,9 @@ var getProductEntity = function(inputText, callback) {
 				responseText += "Entity: " + JSON.stringify(entities[i], null, 2) + "\n";
 			}
 
-			if (entities.length === 0)
+			if (entities.length === 0) {
 				responseText = "unknown";
+			}
 
 			calback(responseText);
 		}
