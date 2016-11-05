@@ -15,6 +15,8 @@ var bot = controller.spawn({
 	token: "xoxb-101465156790-NlQkVDpfDeKRp3vQlsxGypTx"
 })
 
+const MAX_ITEMS = 10;
+
 const PORT = process.env.PORT || 8080;
 
 var ebay = require('ebay-api');
@@ -30,7 +32,7 @@ var ebaySearchItem = function(item, callback) {
 			keywords: item.split(" "),
 			
 			paginationInput: {
-				entriesPerPage: 25
+				entriesPerPage: MAX_ITEMS
 			}
 		},
 		sandbox: true,
@@ -61,7 +63,7 @@ var ebaySearchItem = function(item, callback) {
 
 var walmartSearchItem = function(item, callback) {
 	var resultingList = [];
-	walmart.search(item, {numItems: 25}).then((result) => {
+	walmart.search(item, {numItems: MAX_ITEMS}).then((result) => {
 		for (var i = 0; i < result.items.length; i++) {
 			var prod = result.items[i];
 			resultingList.push({
