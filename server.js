@@ -1,19 +1,67 @@
-var ConversationV1 = require('watson-developer-cloud/conversation/v1');
-
-var conversation = new ConversationV1({
-	username: '02917926-80b7-4368-a73a-8368209aaf9f',
-	password: 'lizyVQKqxRTe',
-	version_date: '2016-07-01'
-});
-
 var request = require('request');
 
-var readline = require('readline');
 
-const rl = readline.createInterface({
-	input: process.stdin,
-	output: process.stdout
+
+var watson = require('watson-developer-cloud');
+var alchemy_language = watson.alchemy_language({
+	api_key: 'API_KEY'
+})
+
+alchemy_language.entities({
+	text: 'http://www-03.ibm.com/press/us/en/pressrelease/49384.wss'
+}, function (err, response) {
+	if (err)
+		console.log('error:', err);
+	else
+		console.log(JSON.stringify(response, null, 2));
 });
+
+
+
+
+
+var Botkit = require('botkit');
+
+var controller = Botkit.slackbot();
+
+var bot = controller.spawn({
+	token: "xoxb-100078757376-chghUOBXaiXJrlIqlPl8gyPy"
+})
+
+bot.startRTM(function(err,bot,payload) {
+	if (err) {
+		throw new Error('Could not connect to Slack');
+	}
+
+	// close the RTM for the sake of it in 5 seconds
+	/*setTimeout(function() {
+		bot.closeRTM();
+	}, 5000);*/
+});
+
+controller.hears(['best prices', 'cheapest prices', 'lowest prices'], 'direct_message', function(bot, message) {
+	bot.reply("Searching for lowest prices of " + message.split(" ").pop())
+
+	controller.storage.users.get(message.user, function(err, user) {
+		if (user && user.name) {
+			bot.reply(message, 'Hello ' + user.name + '!!');
+		} else {
+			bot.reply(message, 'Hello.');
+		}
+	});
+});
+
+controller.hears(['uptime', 'identify yourself', 'who are you', 'what is your name'],
+	'direct_message', function(bot, message) {
+	var hostname = os.hostname();
+	var uptime = formatUptime(process.uptime());
+
+	bot.reply(message,
+		':robot_face: I am a bot named <@' + bot.identity.name +
+		'>. I have been running for ' + uptime + ' on ' + hostname + '.');
+});
+
+const PORT = process.env.PORT || 8080;
 
 console.log("LeGaCy of TeJaCy");
 
@@ -34,31 +82,4 @@ var walmartSearchItem = function(item) {
 	})
 }
 
-var handleBotResponse = function(userText, callback) {
-	conversation.message({
-		input: { text: userText },
-		workspace_id: 'c4a9903a-b14a-45c0-8a30-c013b4ff3a6a'
-	}, callback);
-}
-
-rl.question("Hi there! What would you like me to do?", function(answer) {
-	handleBotResponse(answer, function(err, response) {
-		if (err) {
-			console.log(err);
-		} else {
-			console.log(response.output);
-		}
-
-		rl.close();
-	})
-})
-
-/*handleBotResponse("Best prices for bananas", function(err, response) {
-	if (err) {
-		console.log(err);
-	} else {
-		console.log("$59.99");
-	}
-});*/
-
-walmartSearchItem("smart watch")
+walmartSearchItem("smart watch");
