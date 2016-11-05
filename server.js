@@ -197,14 +197,8 @@ controller.hears(['best prices', 'cheapest prices', 'lowest prices'], 'direct_me
 							" - Price: " + item.price + "\n" + 
 							" - Link: " + item.url;
 
-			var response = {
-				//'username': 'ProdBot'
-				'text': bodyText,
-				'icon_url': item.image
-			};
-
 			console.log(bodyText);
-			convo.say("bodyText");
+			bot.reply(message, bodyText);
 		}
 
 		/*var mainBodyText = "";
