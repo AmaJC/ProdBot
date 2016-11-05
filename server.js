@@ -198,12 +198,13 @@ controller.hears(['best prices', 'cheapest prices', 'lowest prices'], 'direct_me
 									" - Price: " + item.price + "\n" + 
 									" - Link: " + item.url;
 
-					var response = {
+					/*var response = {
+						//'username': 'ProdBot'
 						'text': bodyText,
 						'icon_url': item.image
-					}
+					}*/
 
-					convo.say(message, response);
+					convo.say(message, bodyText);
 				}
 			});
 		}
