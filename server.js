@@ -226,7 +226,7 @@ controller.hears(['best prices', 'cheapest prices', 'lowest prices'], 'direct_me
 		});
 
 		console.log(megaList);
-		bot.reply(message, megaList.slice(0, 3));
+		bot.reply(message, JSON.stringify(megaList.slice(0, 3), null, 4));
 	});
 });
 
