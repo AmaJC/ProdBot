@@ -52,7 +52,7 @@ var ebaySearchItem = function(item, callback) {
 				var prod = items[i];
 				resultingList.push({
 					"name": prod.title,
-					"price": prod.sellingStatus.currentPrice.amount,
+					"price": "$" + prod.sellingStatus.currentPrice.amount,
 					"provider": "ebay",
 					"url": "http://www.ebay.com/itm/" + prod.title.replace(" ", "+"),
 					"image": prod.galleryURL
@@ -71,7 +71,7 @@ var walmartSearchItem = function(item, callback) {
 			var prod = result.items[i];
 			resultingList.push({
 				"name": prod.name,
-				"price": prod.salePrice,
+				"price": "$" + prod.salePrice,
 				"provider": "Walmart",
 				"url": prod.productUrl,
 				"image": prod.thumbnailImage
@@ -184,13 +184,13 @@ controller.hears(['best prices', 'cheapest prices', 'lowest prices'], 'direct_me
 		});
 
 		console.log(JSON.stringify(megaList.slice(0, 3),null,4));
-		bot.reply(message, JSON.stringify(megaList.slice(0, 3),null,4));
+		//bot.reply(message, JSON.stringify(megaList.slice(0, 3),null,4));
 		
 		const ACTUAL_DISPLAY_ITEMS = (MAX_DISPLAY_ITEMS > megaList.length ? megaList.length : MAX_DISPLAY_ITEMS);
 
 		var bestList = megaList.slice(0, ACTUAL_DISPLAY_ITEMS);
 
-		bot.reply(message, "Here are the top " + ACTUAL_DISPLAY_ITEMS + " lowest-priced products:");
+		bot.reply(message, "Here are the top " + ACTUAL_DISPLAY_ITEMS + " lowest-priced products of " + targetEntity + ":");
 		for (var i = 0; i < bestList.length; i++) {
 			var item = bestList[i];
 
