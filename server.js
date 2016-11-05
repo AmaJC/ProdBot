@@ -51,7 +51,7 @@ var ebaySearchItem = function(item, callback) {
 					"name": prod.title,
 					"price": prod.sellingStatus.currentPrice.amount,
 					"provider": "ebay",
-					"url": "http://www.ebay.com/itm/" + prod.productId,
+					"url": "http://www.ebay.com/itm/" + prod.title,
 					"image": prod.galleryURL
 				});
 				/*console.log("name:", prod.title);
@@ -190,7 +190,7 @@ controller.hears(['best prices', 'cheapest prices', 'lowest prices'], 'direct_me
 		var bestList = megaList.slice(0, ACTUAL_DISPLAY_ITEMS);
 
 		bot.reply(message, "Here are the top " + ACTUAL_DISPLAY_ITEMS + " lowest-priced products:");
-		/*for (var i = 0; i < bestList.length; i++) {
+		for (var i = 0; i < bestList.length; i++) {
 			var item = bestList[i];
 
 			var bodyText =	(i + 1) + ". " + item.name + " - " + item.provider + "\n" + 
@@ -205,8 +205,9 @@ controller.hears(['best prices', 'cheapest prices', 'lowest prices'], 'direct_me
 
 			console.log(bodyText);
 			convo.say("bodyText");
-		}*/
-		var mainBodyText = "";
+		}
+
+		/*var mainBodyText = "";
 
 		for (var i = 0; i < bestList.length; i++) {
 			var item = bestList[i];
@@ -214,16 +215,10 @@ controller.hears(['best prices', 'cheapest prices', 'lowest prices'], 'direct_me
 			mainBodyText +=	(i + 1) + ". " + item.name + " - " + item.provider + "\n" + 
 							" - Price: " + item.price + "\n" + 
 							" - Link: " + item.url + "\n";
-
-			/*var response = {
-				//'username': 'ProdBot'
-				'text': bodyText,
-				'icon_url': item.image
-			};*/
 		}
 
 		console.log(mainBodyText);
-		bot.reply(message, mainBodyText);
+		bot.reply(message, mainBodyText);*/
 	});
 });
 
