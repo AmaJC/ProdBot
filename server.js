@@ -206,7 +206,7 @@ controller.hears(['best prices', 'cheapest prices', 'lowest prices'], 'direct_me
 					};
 					
 					console.log(JSON.stringify(response, null, 4));
-					convo.say(response);
+					convo.say(bodyText);
 				}
 			});
 		}
