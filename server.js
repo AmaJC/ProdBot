@@ -182,7 +182,7 @@ controller.hears(['best prices', 'cheapest prices', 'lowest prices'], 'direct_me
 			return parseFloat(a.price) - parseFloat(b.price);
 		});
 
-		console.log(JSON.stringify(megaList.slice(0, 3),null,4);
+		console.log(JSON.stringify(megaList.slice(0, 3),null,4));
 		bot.reply(message, JSON.stringify(megaList.slice(0, 3),null,4));
 		
 		/*const ACTUAL_DISPLAY_ITEMS = (MAX_DISPLAY_ITEMS > megaList.length ? megaList.length : MAX_DISPLAY_ITEMS);
