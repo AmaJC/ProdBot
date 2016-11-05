@@ -1,9 +1,9 @@
 var async = require('async');
 
-var watson = require('watson-developer-cloud');
+/*var watson = require('watson-developer-cloud');
 var alchemy_language = watson.alchemy_language({
 	api_key: 'a0980d6813f71ed464520f49f2ab0e0c90c2cc5b'
-})
+})*/
 
 var Botkit = require('botkit');
 
@@ -76,7 +76,7 @@ var walmartSearchItem = function(item, callback) {
 	});
 }
 
-var getProductEntity = function(inputText, callback) {
+/*var getProductEntity = function(inputText, callback) {
 	alchemy_language.entities({
 		text: inputText
 	}, function (err, response) {
@@ -98,7 +98,7 @@ var getProductEntity = function(inputText, callback) {
 			callback(responseText);
 		}
 	});
-}
+}*/
 
 var getProductEntity_ForDummies = function(inputText) {
 	var words = inputText.split(" ");
