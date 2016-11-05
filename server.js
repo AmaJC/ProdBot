@@ -51,7 +51,7 @@ var ebaySearchItem = function(item, callback) {
 					"name": prod.title,
 					"price": prod.sellingStatus.currentPrice.amount,
 					"provider": "ebay",
-					"url": "http://www.ebay.com/itm/" + prod.title,
+					"url": "http://www.ebay.com/itm/" + prod.itemId,
 					"image": prod.galleryURL
 				});
 				/*console.log("name:", prod.title);
