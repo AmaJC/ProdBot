@@ -10,7 +10,7 @@ var Botkit = require('botkit');
 var controller = Botkit.slackbot();
 
 var bot = controller.spawn({
-	token: "xoxb-100078757376-chghUOBXaiXJrlIqlPl8gyPy"
+	token: "xoxb-101465156790-NlQkVDpfDeKRp3vQlsxGypTx"
 })
 
 const PORT = process.env.PORT || 8080;
