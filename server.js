@@ -68,10 +68,11 @@ var getProductEntity_ForDummies = function(inputText) {
 		}
 	}
 
-	if (resultText === "")
+	if (resultText === "") {
 		resultText = "unknown";
-	else
+	} else {
 		resultText = resultText.substring(0, resultText.length - 1);
+	}
 
 	return resultText;
 }
