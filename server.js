@@ -162,11 +162,13 @@ controller.hears(['best prices', 'cheapest prices', 'lowest prices'], 'direct_me
 
 			async.parallel([
 				function(callback) {
+					console.log("Searching in Walmart...");
 					walmartSearchItem(targetEntity, (list) => {
 						callback(null, list);
 					})
 				},
 				function(callback) {
+					console.log("Searching in EBay...");
 					ebaySearchItem(targetEntity, (list) => {
 						callback(null, list);
 					})
