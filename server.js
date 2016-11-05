@@ -189,8 +189,8 @@ controller.hears(['best prices', 'cheapest prices', 'lowest prices'], 'direct_me
 
 		var bestList = megaList.slice(0, ACTUAL_DISPLAY_ITEMS);
 
-		bot.reply(message, "Here are the top " + ACTUAL_DISPLAY_ITEMS + " lowest-priced products:");/*
-		for (var i = 0; i < bestList.length; i++) {
+		bot.reply(message, "Here are the top " + ACTUAL_DISPLAY_ITEMS + " lowest-priced products:");
+		/*for (var i = 0; i < bestList.length; i++) {
 			var item = bestList[i];
 
 			var bodyText =	(i + 1) + ". " + item.name + " - " + item.provider + "\n" + 
@@ -206,6 +206,24 @@ controller.hears(['best prices', 'cheapest prices', 'lowest prices'], 'direct_me
 			console.log(bodyText);
 			convo.say("bodyText");
 		}*/
+		var mainBodyText = "";
+
+		for (var i = 0; i < bestList.length; i++) {
+			var item = bestList[i];
+
+			mainBodyText +=	(i + 1) + ". " + item.name + " - " + item.provider + "\n" + 
+							" - Price: " + item.price + "\n" + 
+							" - Link: " + item.url + "\n";
+
+			/*var response = {
+				//'username': 'ProdBot'
+				'text': bodyText,
+				'icon_url': item.image
+			};*/
+		}
+
+		console.log(mainBodyText);
+		bot.reply(message, mainBodyText);
 	});
 });
 
