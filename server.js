@@ -151,66 +151,61 @@ bot.startRTM(function(err,bot,payload) {
 });
 
 controller.hears(['best prices', 'cheapest prices', 'lowest prices'], 'direct_message', function(bot, message) {
-	bot.startConversation(message, function(err, convo) {
-		if (!err) {
-			//convo.say('DEBUG: message = ' + JSON.stringify(message, null, 4));
+	var targetEntity = getProductEntity_ForDummies(message.text);
+	bot.reply(message, 'Searching for the best prices of ' + targetEntity + '...');
 
-			var targetEntity = getProductEntity_ForDummies(message.text);
-			convo.say('Searching for the best prices of ' + targetEntity + '...');
-
-			async.parallel([
-				function(callback) {
-					walmartSearchItem(targetEntity, (list) => {
-						callback(null, list);
-					})
-				},
-				function(callback) {
-					ebaySearchItem(targetEntity, (list) => {
-						callback(null, list);
-					})
-				}
-			], function(err, results) {
-				console.log("FINISHED!!");
-				var megaList = [];
-				
-				for (var i = 0; i < results[0].length; i++) {
-					megaList.push(results[0][i]);
-				}
-
-				for (var i = 0; i < results[1].length; i++) {
-					megaList.push(results[1][i]);
-				}
-
-				megaList.sort(function(a, b) {
-					return parseFloat(a.price) - parseFloat(b.price);
-				});
-
-				console.log(megaList);
-				convo.say(JSON.stringify(megaList.slice(0, 3),null,4));
-				
-				/*const ACTUAL_DISPLAY_ITEMS = (MAX_DISPLAY_ITEMS > megaList.length ? megaList.length : MAX_DISPLAY_ITEMS);
-
-				var bestList = megaList.slice(0, ACTUAL_DISPLAY_ITEMS);
-
-				convo.say("Here are the top " + ACTUAL_DISPLAY_ITEMS + " lowest-priced products:");
-				for (var i = 0; i < bestList.length; i++) {
-					var item = bestList[i];
-
-					var bodyText =	(i + 1) + ". " + item.name + " - " + item.provider + "\n" + 
-									" - Price: " + item.price + "\n" + 
-									" - Link: " + item.url;
-
-					var response = {
-						//'username': 'ProdBot'
-						'text': bodyText,
-						'icon_url': item.image
-					};
-
-					console.log(bodyText);
-					convo.say("bodyText");
-				}*/
-			});
+	async.parallel([
+		function(callback) {
+			walmartSearchItem(targetEntity, (list) => {
+				callback(null, list);
+			})
+		},
+		function(callback) {
+			ebaySearchItem(targetEntity, (list) => {
+				callback(null, list);
+			})
 		}
+	], function(err, results) {
+		console.log("FINISHED!!");
+		bot.reply(message, "FINISHED!!");
+		var megaList = [];
+		
+		for (var i = 0; i < results[0].length; i++) {
+			megaList.push(results[0][i]);
+		}
+
+		for (var i = 0; i < results[1].length; i++) {
+			megaList.push(results[1][i]);
+		}
+
+		megaList.sort(function(a, b) {
+			return parseFloat(a.price) - parseFloat(b.price);
+		});
+
+		console.log(JSON.stringify(megaList.slice(0, 3),null,4);
+		bot.reply(message, JSON.stringify(megaList.slice(0, 3),null,4));
+		
+		/*const ACTUAL_DISPLAY_ITEMS = (MAX_DISPLAY_ITEMS > megaList.length ? megaList.length : MAX_DISPLAY_ITEMS);
+
+		var bestList = megaList.slice(0, ACTUAL_DISPLAY_ITEMS);
+
+		convo.say("Here are the top " + ACTUAL_DISPLAY_ITEMS + " lowest-priced products:");
+		for (var i = 0; i < bestList.length; i++) {
+			var item = bestList[i];
+
+			var bodyText =	(i + 1) + ". " + item.name + " - " + item.provider + "\n" + 
+							" - Price: " + item.price + "\n" + 
+							" - Link: " + item.url;
+
+			var response = {
+				//'username': 'ProdBot'
+				'text': bodyText,
+				'icon_url': item.image
+			};
+
+			console.log(bodyText);
+			convo.say("bodyText");
+		}*/
 	});
 });
 
