@@ -1,7 +1,5 @@
 var async = require('async');
 
-var merge = require('merge');
-
 var watson = require('watson-developer-cloud');
 var alchemy_language = watson.alchemy_language({
 	api_key: 'a0980d6813f71ed464520f49f2ab0e0c90c2cc5b'
@@ -174,8 +172,18 @@ controller.hears(['best prices', 'cheapest prices', 'lowest prices'], 'direct_me
 					})
 				}
 			], function(err, results) {
-				var megaResultList = merge(results[0], results[1]);
-				convo.say(megaResultList);
+				var megaList = [];
+				
+				for (var i = 0; i < results[0].length; i++) {
+					megaList.push(results[0][i]);
+				}
+
+				for (var i = 0; i < results[1].length; i++) {
+					megaList.push(results[1][i]);
+				}
+
+				console.log(megaList);
+				convo.say(megaList);
 			});
 		}
 	})
