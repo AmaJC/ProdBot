@@ -96,14 +96,6 @@ controller.hears(['best prices', 'cheapest prices', 'lowest prices'], 'direct_me
 			});
 		}
 	})
-
-	/*controller.storage.users.get(message.user, function(err, user) {
-		if (user && user.name) {
-			bot.reply(message, 'Hello ' + user.name + '!!');
-		} else {
-			bot.reply(message, 'Hello.');
-		}
-	});*/
 });
 
 controller.hears(['uptime', 'identify yourself', 'who are you', 'what is your name'],
