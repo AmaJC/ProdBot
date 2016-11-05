@@ -15,5 +15,10 @@
   "bugs": {
     "url": "https://github.com/AmaJC/ProdBot/issues"
   },
-  "homepage": "https://github.com/AmaJC/ProdBot#readme"
+  "homepage": "https://github.com/AmaJC/ProdBot#readme",
+  "dependencies": {
+    "botkit": "^0.4.0",
+    "request": "^2.78.0",
+    "watson-developer-cloud": "^2.8.1"
+  }
 }
