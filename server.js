@@ -185,9 +185,9 @@ controller.hears(['best prices', 'cheapest prices', 'lowest prices'], 'direct_me
 					return parseFloat(a.price) - parseFloat(b.price);
 				});
 
-				//console.log(megaList);
-				//convo.say(megaList.slice(0, 3));
-				const ACTUAL_DISPLAY_ITEMS = (MAX_DISPLAY_ITEMS > megaList.length ? megaList.length : MAX_DISPLAY_ITEMS);
+				console.log(megaList);
+				convo.say(megaList.slice(0, 3));
+				/*const ACTUAL_DISPLAY_ITEMS = (MAX_DISPLAY_ITEMS > megaList.length ? megaList.length : MAX_DISPLAY_ITEMS);
 
 				var bestList = megaList.slice(0, ACTUAL_DISPLAY_ITEMS);
 
@@ -204,10 +204,10 @@ controller.hears(['best prices', 'cheapest prices', 'lowest prices'], 'direct_me
 						'text': bodyText,
 						'icon_url': item.image
 					};
-					
+
 					console.log(JSON.stringify(response, null, 4));
 					convo.say(bodyText);
-				}
+				}*/
 			});
 		}
 	});
