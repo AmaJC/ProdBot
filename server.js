@@ -186,8 +186,8 @@ controller.hears(['best prices', 'cheapest prices', 'lowest prices'], 'direct_me
 				});
 
 				console.log(megaList);
-				convo.say(JSON.stringify(megaList.slice(0, 3),null,4));
-				/*const ACTUAL_DISPLAY_ITEMS = (MAX_DISPLAY_ITEMS > megaList.length ? megaList.length : MAX_DISPLAY_ITEMS);
+				//convo.say(JSON.stringify(megaList.slice(0, 3),null,4));
+				const ACTUAL_DISPLAY_ITEMS = (MAX_DISPLAY_ITEMS > megaList.length ? megaList.length : MAX_DISPLAY_ITEMS);
 
 				var bestList = megaList.slice(0, ACTUAL_DISPLAY_ITEMS);
 
@@ -205,9 +205,9 @@ controller.hears(['best prices', 'cheapest prices', 'lowest prices'], 'direct_me
 						'icon_url': item.image
 					};
 
-					console.log(JSON.stringify(response, null, 4));
-					convo.say(bodyText);
-				}*/
+					console.log(typeof bodyText);
+					convo.say("" + bodyText);
+				}
 			});
 		}
 	});
