@@ -51,7 +51,7 @@ var getProductEntity = function(inputText, callback) {
 				responseText = "unknown";
 			}
 
-			calback(responseText);
+			callback(responseText);
 		}
 	});
 }
