@@ -13,7 +13,8 @@ var bot = controller.spawn({
 	token: "xoxb-101465156790-NlQkVDpfDeKRp3vQlsxGypTx"
 })
 
-const MAX_ITEMS = 10;
+const MAX_QUERY_ITEMS = 25;
+const MAX_DISPLAY_ITEMS = 5;
 
 const PORT = process.env.PORT || 8080;
 
@@ -30,7 +31,7 @@ var ebaySearchItem = function(item, callback) {
 			keywords: item.split(" "),
 			
 			paginationInput: {
-				entriesPerPage: MAX_ITEMS
+				entriesPerPage: MAX_QUERY_ITEMS
 			}
 		},
 		sandbox: true,
@@ -49,6 +50,9 @@ var ebaySearchItem = function(item, callback) {
 				resultingList.push({
 					"name": prod.title,
 					"price": prod.sellingStatus.currentPrice.amount
+					"provider": "ebay",
+					"url": "http://www.ebay.com/itm/" + prod.productId,
+					"image": prod.galleryURL
 				});
 				/*console.log("name:", prod.title);
 				console.log("price:", prod.sellingStatus.currentPrice.amount);*/
@@ -61,15 +65,16 @@ var ebaySearchItem = function(item, callback) {
 
 var walmartSearchItem = function(item, callback) {
 	var resultingList = [];
-	walmart.search(item, {numItems: MAX_ITEMS}).then((result) => {
+	walmart.search(item, {numItems: MAX_QUERY_ITEMS}).then((result) => {
 		for (var i = 0; i < result.items.length; i++) {
 			var prod = result.items[i];
 			resultingList.push({
 				"name": prod.name,
-				"price": prod.salePrice
+				"price": prod.salePrice,
+				"provider": "Walmart",
+				"url": prod.productUrl,
+				"image": prod.thumbnailImage
 			});
-			/*console.log("name:", prod.name)
-			console.log("price:", prod.salePrice);*/
 		}
 
 		callback(resultingList);
@@ -146,27 +151,20 @@ bot.startRTM(function(err,bot,payload) {
 });
 
 controller.hears(['best prices', 'cheapest prices', 'lowest prices'], 'direct_message', function(bot, message) {
-	/*bot.startConversation(message, function(err, convo) {
+	bot.startConversation(message, function(err, convo) {
 		if (!err) {
-			convo.say('Searching for lowest prices...');
-			convo.say('DEBUG: message = ' + JSON.stringify(message, null, 4));
-
-			// getProductEntity(message.text, (targetEntity) => {
-			// 	convo.say(targetEntity);
-			// });
+			//convo.say('DEBUG: message = ' + JSON.stringify(message, null, 4));
 
 			var targetEntity = getProductEntity_ForDummies(message.text);
-			convo.say("DEBUG: Entity: " + targetEntity);
+			convo.say('Searching for the best prices of ' + targetEntity + '...');
 
 			async.parallel([
 				function(callback) {
-					console.log("Searching in Walmart...");
 					walmartSearchItem(targetEntity, (list) => {
 						callback(null, list);
 					})
 				},
 				function(callback) {
-					console.log("Searching in EBay...");
 					ebaySearchItem(targetEntity, (list) => {
 						callback(null, list);
 					})
@@ -186,47 +184,29 @@ controller.hears(['best prices', 'cheapest prices', 'lowest prices'], 'direct_me
 					return parseFloat(a.price) - parseFloat(b.price);
 				});
 
-				console.log(megaList);
-				convo.say(megaList.slice(0, 3));
+				//console.log(megaList);
+				//convo.say(megaList.slice(0, 3));
+				const ACTUAL_DISPLAY_ITEMS = (MAX_DISPLAY_ITEMS > megaList.length ? megaList.length : MAX_DISPLAY_ITEMS);
+
+				var bestList = megaList.slice(0, ACTUAL_DISPLAY_ITEMS);
+
+				convo.say(message, "Here are the top " + ACTUAL_DISPLAY_ITEMS + " lowest-priced products:");
+				for (var i = 0; i < bestList.length; i++) {
+					var item = bestList[i];
+
+					var bodyText =	(i + 1) + ". " + item.name + " - " + item.provider + "\n" + 
+									" - Price: " + item.price + "\n" + 
+									" - Link: " + item.url;
+
+					var response = {
+						'text': bodyText,
+						'icon_url': item.image
+					}
+
+					convo.say(message, response);
+				}
 			});
 		}
-	})*/
-	bot.reply(message, 'Searching for lowest prices...');
-	bot.reply(message, 'DEBUG: message = ' + JSON.stringify(message, null, 4));
-
-	var targetEntity = getProductEntity_ForDummies(message.text);
-	bot.reply(message, "DEBUG: Entity: " + targetEntity);
-
-	async.parallel([
-		function(callback) {
-			console.log("Searching in Walmart...");
-			walmartSearchItem(targetEntity, (list) => {
-				callback(null, list);
-			})
-		},
-		function(callback) {
-			console.log("Searching in EBay...");
-			ebaySearchItem(targetEntity, (list) => {
-				callback(null, list);
-			})
-		}
-	], function(err, results) {
-		var megaList = [];
-		
-		for (var i = 0; i < results[0].length; i++) {
-			megaList.push(results[0][i]);
-		}
-
-		for (var i = 0; i < results[1].length; i++) {
-			megaList.push(results[1][i]);
-		}
-
-		megaList.sort(function(a, b) {
-			return parseFloat(a.price) - parseFloat(b.price);
-		});
-
-		console.log(megaList);
-		bot.reply(message, JSON.stringify(megaList.slice(0, 3), null, 4));
 	});
 });
 
