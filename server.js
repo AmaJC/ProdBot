@@ -1,3 +1,5 @@
+var async = require('async');
+
 var merge = require('merge');
 
 var watson = require('watson-developer-cloud');
@@ -152,11 +154,11 @@ controller.hears(['best prices', 'cheapest prices', 'lowest prices'], 'direct_me
 			/*getProductEntity(message.text, (targetEntity) => {
 				convo.say(targetEntity);
 			});*/
-			
+
 			var targetEntity = getProductEntity_ForDummies(message.text);
 			convo.say("DEBUG: Entity: " + targetEntity);
 
-			parallel([
+			async.parallel([
 				function(callback) {
 					walmartSearchItem(targetEntity, (list) => {
 						callback(null, list);
