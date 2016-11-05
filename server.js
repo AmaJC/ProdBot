@@ -1,4 +1,4 @@
-var request = require('request');
+var merge = require('merge');
 
 var watson = require('watson-developer-cloud');
 var alchemy_language = watson.alchemy_language({
@@ -15,21 +15,63 @@ var bot = controller.spawn({
 
 const PORT = process.env.PORT || 8080;
 
-var walmartKey = "x8skm2cduv6h8znkr76as5ck";
+var ebay = require('ebay-api');
 
-var walmartSearchItem = function(item) {
-	var url = "http://api.walmartlabs.com/v1/search?apiKey=" + walmartKey + "&query=" + item;
-	
-	request(url, function (error, response, body) {
-		if (!error && response.statusCode == 200) {
-			var crap = JSON.parse(body);
-			for (var i = 0; i < crap.items.length; i++) {
-				var prod = crap.items[i];
-				//console.log("name: " + prod.name + "\n price: " + prod.sale/Pric);
-				//console.log(prod.thumbnailImage);
+var walmart = require('walmart')("x8skm2cduv6h8znkr76as5ck");
+
+var ebaySearchItem = function(item, callback) {
+	ebay.xmlRequest({
+		serviceName: 'Finding',
+		opType: 'findItemsByKeywords',
+		appId: 'TejasSha-ProdBot-SBX-dbff92a48-6a3cafaa', // FILL IN YOUR OWN APP KEY, GET ONE HERE: https://publisher.ebaypartnernetwork.com/PublisherToolsAPI
+		params: {
+			keywords: item.split(" "),
+			
+			paginationInput: {
+				entriesPerPage: 25
 			}
+		},
+		sandbox: true,
+		parser: ebay.parseResponseJson // (default)
+	},
+	// gets all the items together in a merged array
+	(error, itemsResponse) => {
+		if (error) {
+			console.log(error);
+		} else {
+			var resultingList = [];
+			var items = itemsResponse.searchResult.item;
+
+			for (var i = 0; i < items.length; i++) {
+				var prod = items[i];
+				resultingList.push({
+					"name": prod.title,
+					"price": prod.sellingStatus.currentPrice.amount
+				});
+				/*console.log("name:", prod.title);
+				console.log("price:", prod.sellingStatus.currentPrice.amount);*/
+			}
+
+			callback(resultingList);
 		}
-	})
+	});
+}
+
+var walmartSearchItem = function(item, callback) {
+	var resultingList = [];
+	walmart.search(item, {numItems: 25}).then((result) => {
+		for (var i = 0; i < result.items.length; i++) {
+			var prod = result.items[i];
+			resultingList.push({
+				"name": prod.name,
+				"price": prod.salePrice
+			});
+			/*console.log("name:", prod.name)
+			console.log("price:", prod.salePrice);*/
+		}
+
+		callback(resultingList);
+	});
 }
 
 var getProductEntity = function(inputText, callback) {
@@ -78,32 +120,27 @@ var getProductEntity_ForDummies = function(inputText) {
 }
 
 var formatUptime = function(uptime) {
-    var unit = 'second';
-    if (uptime > 60) {
-        uptime = uptime / 60;
-        unit = 'minute';
-    }
-    if (uptime > 60) {
-        uptime = uptime / 60;
-        unit = 'hour';
-    }
-    if (uptime != 1) {
-        unit = unit + 's';
-    }
+	var unit = 'second';
+	if (uptime > 60) {
+		uptime = uptime / 60;
+		unit = 'minute';
+	}
+	if (uptime > 60) {
+		uptime = uptime / 60;
+		unit = 'hour';
+	}
+	if (uptime != 1) {
+		unit = unit + 's';
+	}
 
-    uptime = uptime + ' ' + unit;
-    return uptime;
+	uptime = uptime + ' ' + unit;
+	return uptime;
 }
 
 bot.startRTM(function(err,bot,payload) {
 	if (err) {
 		throw new Error('Could not connect to Slack');
 	}
-
-	// close the RTM for the sake of it in 5 seconds
-	/*setTimeout(function() {
-		bot.closeRTM();
-	}, 5000);*/
 });
 
 controller.hears(['best prices', 'cheapest prices', 'lowest prices'], 'direct_message', function(bot, message) {
@@ -115,7 +152,25 @@ controller.hears(['best prices', 'cheapest prices', 'lowest prices'], 'direct_me
 			/*getProductEntity(message.text, (targetEntity) => {
 				convo.say(targetEntity);
 			});*/
-			convo.say("Entity: " + getProductEntity_ForDummies(message.text));
+			var targetEntity = getProductEntity_ForDummies(message.text);
+			convo.say("DEBUG: Entity: " + targetEntity);
+
+			parallel([
+				function(callback) {
+					walmartSearchItem(targetEntity, (list) => {
+						callback(null, list);
+					})
+				},
+				function(callback) {
+					ebaySearchItem(targetEntity, (list) => {
+						callback(null, list);
+					})
+				}
+			],
+			function(err, results) {
+				var megaResultList = merge(results[0], results[1]);
+				convo.say(megaResultList);
+			});
 		}
 	})
 });
@@ -132,4 +187,5 @@ controller.hears(['uptime', 'identify yourself', 'who are you', 'what is your na
 
 console.log("LeGaCy of TeJaCy");
 
-//walmartSearchItem("smart watch");
+//walmartSearchItem("Skateboard Helmets");
+//ebaySearchItem("Skateboard Helmets");

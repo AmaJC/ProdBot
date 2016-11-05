@@ -17,8 +17,11 @@
   },
   "homepage": "https://github.com/AmaJC/ProdBot#readme",
   "dependencies": {
+    "async": "^2.1.2",
     "botkit": "^0.4.0",
-    "request": "^2.78.0",
+    "ebay-api": "^1.13.1",
+    "merge": "^1.2.0",
+    "walmart": "0.0.4",
     "watson-developer-cloud": "^2.8.1"
   }
 }
