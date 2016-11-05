@@ -170,6 +170,7 @@ controller.hears(['best prices', 'cheapest prices', 'lowest prices'], 'direct_me
 					})
 				}
 			], function(err, results) {
+				console.log("FINISHED!!");
 				var megaList = [];
 				
 				for (var i = 0; i < results[0].length; i++) {
@@ -190,7 +191,7 @@ controller.hears(['best prices', 'cheapest prices', 'lowest prices'], 'direct_me
 
 				var bestList = megaList.slice(0, ACTUAL_DISPLAY_ITEMS);
 
-				convo.say(message, "Here are the top " + ACTUAL_DISPLAY_ITEMS + " lowest-priced products:");
+				convo.say("Here are the top " + ACTUAL_DISPLAY_ITEMS + " lowest-priced products:");
 				for (var i = 0; i < bestList.length; i++) {
 					var item = bestList[i];
 
@@ -198,13 +199,14 @@ controller.hears(['best prices', 'cheapest prices', 'lowest prices'], 'direct_me
 									" - Price: " + item.price + "\n" + 
 									" - Link: " + item.url;
 
-					/*var response = {
+					var response = {
 						//'username': 'ProdBot'
 						'text': bodyText,
 						'icon_url': item.image
-					}*/
-
-					convo.say(message, bodyText);
+					};
+					
+					console.log(JSON.stringify(response, null, 4));
+					convo.say(response);
 				}
 			});
 		}
