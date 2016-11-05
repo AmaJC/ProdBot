@@ -56,6 +56,20 @@ var getProductEntity = function(inputText, callback) {
 	});
 }
 
+var getProductEntity_ForDummies = function(inputText) {
+	var words = inputText.split(" ");
+	
+	for (var i = 0; i < words.length; i++) {
+		var word = words[i];
+
+		if (word[0] === word[0].toUpperCase()) {
+			return word;
+		}
+	}
+
+	return "unknown";
+}
+
 var formatUptime = function(uptime) {
     var unit = 'second';
     if (uptime > 60) {
@@ -91,9 +105,10 @@ controller.hears(['best prices', 'cheapest prices', 'lowest prices'], 'direct_me
 			convo.say('Searching for lowest prices...');
 			convo.say('DEBUG: message = ' + JSON.stringify(message, null, 4));
 
-			getProductEntity(message.text, (targetEntity) => {
+			/*getProductEntity(message.text, (targetEntity) => {
 				convo.say(targetEntity);
-			});
+			});*/
+			convo.say("Entity: " + getProductEntity_ForDummies(message.text));
 		}
 	})
 });
