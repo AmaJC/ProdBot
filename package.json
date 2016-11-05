@@ -1,0 +1,19 @@
+{
+  "name": "prod-bot",
+  "version": "0.0.1",
+  "description": "Om Ma Gaush",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AmaJC/ProdBot.git"
+  },
+  "author": "LeGaCy of TeJaCy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AmaJC/ProdBot/issues"
+  },
+  "homepage": "https://github.com/AmaJC/ProdBot#readme"
+}

@@ -1,0 +1,1 @@
+console.log("LeGaCy of TeJaCy");
