@@ -188,7 +188,7 @@ controller.hears(['best prices', 'cheapest prices', 'lowest prices'], 'direct_me
 				console.log(megaList);
 				convo.say(JSON.stringify(megaList.slice(0, 3),null,4));
 				
-				const ACTUAL_DISPLAY_ITEMS = (MAX_DISPLAY_ITEMS > megaList.length ? megaList.length : MAX_DISPLAY_ITEMS);
+				/*const ACTUAL_DISPLAY_ITEMS = (MAX_DISPLAY_ITEMS > megaList.length ? megaList.length : MAX_DISPLAY_ITEMS);
 
 				var bestList = megaList.slice(0, ACTUAL_DISPLAY_ITEMS);
 
@@ -200,15 +200,15 @@ controller.hears(['best prices', 'cheapest prices', 'lowest prices'], 'direct_me
 									" - Price: " + item.price + "\n" + 
 									" - Link: " + item.url;
 
-					/*var response = {
+					var response = {
 						//'username': 'ProdBot'
 						'text': bodyText,
 						'icon_url': item.image
-					};*/
+					};
 
 					console.log(bodyText);
 					convo.say("bodyText");
-				}
+				}*/
 			});
 		}
 	});
