@@ -86,6 +86,7 @@ controller.hears(['best prices', 'cheapest prices', 'lowest prices'], 'direct_me
 	bot.startConversation(message, function(err, convo) {
 		if (!err) {
 			convo.say('Searching for lowest prices...');
+			convo.say('DEBUG: message = ' + message);
 
 			getProductEntity(message, (targetEntity) => {
 				bot.reply("DEBUG: found target entity: " + targetEntity);
