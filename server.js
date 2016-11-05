@@ -92,8 +92,8 @@ controller.hears(['best prices', 'cheapest prices', 'lowest prices'], 'direct_me
 			convo.say('DEBUG: message = ' + JSON.stringify(message, null, 4));
 
 			getProductEntity(message.text, (targetEntity) => {
-				bot.reply("DEBUG: found target entity: " + targetEntity);
-			})
+				convo.say("DEBUG: found target entity: " + targetEntity);
+			});
 		}
 	})
 
