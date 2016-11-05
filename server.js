@@ -54,7 +54,7 @@ var ebaySearchItem = function(item, callback) {
 					"name": prod.title,
 					"price": "$" + prod.sellingStatus.currentPrice.amount,
 					"provider": "ebay",
-					"url": "http://www.ebay.com/itm/" + prod.title.replace(" ", "+"),
+					"url": "http://www.ebay.com/itm/" + prod.title.split(" ").join("+"),
 					"image": prod.galleryURL
 				});
 			}
@@ -90,17 +90,13 @@ var walmartSearchItem = function(item, callback) {
 			console.log('Error while trying to extract entities: ', err);
 		else {
 			var entities = response.entities;
-
 			var responseText = "";
-
 			for (var i = 0; i < entities.length; i++) {
 				responseText += "Entity: \n" + JSON.stringify(entities[i], null, 2) + "\n";
 			}
-
 			if (entities.length === 0) {
 				responseText = "unknown";
 			}
-
 			callback(responseText);
 		}
 	});
@@ -151,7 +147,11 @@ bot.startRTM(function(err,bot,payload) {
 	}
 });
 
-controller.hears(['best prices', 'cheapest prices', 'lowest prices'], 'direct_message', function(bot, message) {
+var triggerWords = [
+	'best prices', 'cheapest prices', 'lowest prices',
+	'price', 'prices', 'lowest', 'cheapest','inexpensive'];
+
+controller.hears(triggerWords, 'direct_message', function(bot, message) {
 	var targetEntity = getProductEntity_ForDummies(message.text);
 	bot.reply(message, 'Searching for the best prices of ' + targetEntity + '...');
 
@@ -203,15 +203,12 @@ controller.hears(['best prices', 'cheapest prices', 'lowest prices'], 'direct_me
 		}
 
 		/*var mainBodyText = "";
-
 		for (var i = 0; i < bestList.length; i++) {
 			var item = bestList[i];
-
 			mainBodyText +=	(i + 1) + ". " + item.name + " - " + item.provider + "\n" + 
 							" - Price: " + item.price + "\n" + 
 							" - Link: " + item.url + "\n";
 		}
-
 		console.log(mainBodyText);
 		bot.reply(message, mainBodyText);*/
 	});
