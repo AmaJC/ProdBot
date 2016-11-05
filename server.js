@@ -186,7 +186,7 @@ controller.hears(['best prices', 'cheapest prices', 'lowest prices'], 'direct_me
 				});
 
 				console.log(megaList);
-				convo.say(megaList.slice(0, 3));
+				convo.say(JSON.stringify(megaList.slice(0, 3),null,4);
 				/*const ACTUAL_DISPLAY_ITEMS = (MAX_DISPLAY_ITEMS > megaList.length ? megaList.length : MAX_DISPLAY_ITEMS);
 
 				var bestList = megaList.slice(0, ACTUAL_DISPLAY_ITEMS);
