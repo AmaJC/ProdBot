@@ -40,15 +40,17 @@ var getProductEntity = function(inputText, callback) {
 			console.log('Error while trying to extract entities: ', err);
 		else {
 			var entities = response.entities;
+
+			var responseText = "";
+
 			for (var i = 0; i < entities.length; i++) {
-				console.log("Entity: " + JSON.stringify(entities[i], null, 2));
-				if (entities[i].type == "Product") {
-					calback(entities[i].text);
-					return;
-				}
+				responseText += "Entity: " + JSON.stringify(entities[i], null, 2) + "\n";
 			}
 
-			return "unknown";
+			if (entities.length === 0)
+				responseText = "unknown";
+
+			calback(responseText);
 		}
 	});
 }
@@ -88,9 +90,9 @@ controller.hears(['best prices', 'cheapest prices', 'lowest prices'], 'direct_me
 			convo.say('Searching for lowest prices...');
 			convo.say('DEBUG: message = ' + JSON.stringify(message, null, 4));
 
-			/*getProductEntity(message, (targetEntity) => {
+			getProductEntity(message.text, (targetEntity) => {
 				bot.reply("DEBUG: found target entity: " + targetEntity);
-			})*/
+			})
 		}
 	})
 
