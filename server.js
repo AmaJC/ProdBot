@@ -58,16 +58,22 @@ var getProductEntity = function(inputText, callback) {
 
 var getProductEntity_ForDummies = function(inputText) {
 	var words = inputText.split(" ");
+	var resultText = "";
 	
 	for (var i = 0; i < words.length; i++) {
 		var word = words[i];
 
 		if (word[0] === word[0].toUpperCase()) {
-			return word;
+			resultText += word + " ";
 		}
 	}
 
-	return "unknown";
+	if (resultText === "")
+		resultText = "unknown";
+	else
+		resultText = resultText.substring(0, resultText.length - 1);
+
+	return resultText;
 }
 
 var formatUptime = function(uptime) {
