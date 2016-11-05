@@ -49,7 +49,7 @@ var ebaySearchItem = function(item, callback) {
 				var prod = items[i];
 				resultingList.push({
 					"name": prod.title,
-					"price": prod.sellingStatus.currentPrice.amount
+					"price": prod.sellingStatus.currentPrice.amount,
 					"provider": "ebay",
 					"url": "http://www.ebay.com/itm/" + prod.productId,
 					"image": prod.galleryURL
