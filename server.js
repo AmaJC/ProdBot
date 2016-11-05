@@ -13,7 +13,7 @@ var Botkit = require('botkit');
 var controller = Botkit.slackbot();
 
 var bot = controller.spawn({
-	token: "xoxb-101465156790-NlQkVDpfDeKRp3vQlsxGypTx"
+	token: "xoxb-101465156790-iu4Z0gAXbe7Jlq1L5ESkdcIr"
 })
 
 const MAX_QUERY_ITEMS = 25;
@@ -143,7 +143,7 @@ var formatUptime = function(uptime) {
 
 bot.startRTM(function(err,bot,payload) {
 	if (err) {
-		throw new Error('Could not connect to Slack');
+		throw new Error('Could not connect to Slack: ' + err);
 	}
 });
 
