@@ -1,5 +1,8 @@
 var async = require('async');
 
+var express = require("express");
+var app = express();
+
 /*var watson = require('watson-developer-cloud');
 var alchemy_language = watson.alchemy_language({
 	api_key: 'a0980d6813f71ed464520f49f2ab0e0c90c2cc5b'
@@ -51,7 +54,7 @@ var ebaySearchItem = function(item, callback) {
 					"name": prod.title,
 					"price": prod.sellingStatus.currentPrice.amount,
 					"provider": "ebay",
-					"url": "http://www.ebay.com/itm/" + prod.itemId,
+					"url": "http://www.ebay.com/itm/" + prod.productId,
 					"image": prod.galleryURL
 				});
 				/*console.log("name:", prod.title);
@@ -167,7 +170,7 @@ controller.hears(['best prices', 'cheapest prices', 'lowest prices'], 'direct_me
 		}
 	], function(err, results) {
 		console.log("FINISHED!!");
-		bot.reply(message, "FINISHED!!");
+		//bot.reply(message, "FINISHED!!");
 		var megaList = [];
 		
 		for (var i = 0; i < results[0].length; i++) {
@@ -227,6 +230,10 @@ controller.hears(['uptime', 'identify yourself', 'who are you', 'what is your na
 });
 
 console.log("LeGaCy of TeJaCy");
+
+app.listen(PORT, function () {
+	console.log('Server listening on port ' + PORT + '!');
+});
 
 //walmartSearchItem("Skateboard Helmets");
 //ebaySearchItem("Skateboard Helmets");
