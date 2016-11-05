@@ -17,7 +17,10 @@
   },
   "homepage": "https://github.com/AmaJC/ProdBot#readme",
   "dependencies": {
+<<<<<<< HEAD
     "botkit": "^0.4.0",
+=======
+>>>>>>> fc260b1545f985a9d782afbf0b52621401658197
     "request": "^2.78.0",
     "watson-developer-cloud": "^2.8.1"
   }
