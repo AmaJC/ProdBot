@@ -146,14 +146,14 @@ bot.startRTM(function(err,bot,payload) {
 });
 
 controller.hears(['best prices', 'cheapest prices', 'lowest prices'], 'direct_message', function(bot, message) {
-	bot.startConversation(message, function(err, convo) {
+	/*bot.startConversation(message, function(err, convo) {
 		if (!err) {
 			convo.say('Searching for lowest prices...');
 			convo.say('DEBUG: message = ' + JSON.stringify(message, null, 4));
 
-			/*getProductEntity(message.text, (targetEntity) => {
-				convo.say(targetEntity);
-			});*/
+			// getProductEntity(message.text, (targetEntity) => {
+			// 	convo.say(targetEntity);
+			// });
 
 			var targetEntity = getProductEntity_ForDummies(message.text);
 			convo.say("DEBUG: Entity: " + targetEntity);
@@ -190,7 +190,44 @@ controller.hears(['best prices', 'cheapest prices', 'lowest prices'], 'direct_me
 				convo.say(megaList.slice(0, 3));
 			});
 		}
-	})
+	})*/
+	bot.reply(message, 'Searching for lowest prices...');
+	bot.reply(message, 'DEBUG: message = ' + JSON.stringify(message, null, 4));
+
+	var targetEntity = getProductEntity_ForDummies(message.text);
+	bot.reply(message, "DEBUG: Entity: " + targetEntity);
+
+	async.parallel([
+		function(callback) {
+			console.log("Searching in Walmart...");
+			walmartSearchItem(targetEntity, (list) => {
+				callback(null, list);
+			})
+		},
+		function(callback) {
+			console.log("Searching in EBay...");
+			ebaySearchItem(targetEntity, (list) => {
+				callback(null, list);
+			})
+		}
+	], function(err, results) {
+		var megaList = [];
+		
+		for (var i = 0; i < results[0].length; i++) {
+			megaList.push(results[0][i]);
+		}
+
+		for (var i = 0; i < results[1].length; i++) {
+			megaList.push(results[1][i]);
+		}
+
+		megaList.sort(function(a, b) {
+			return parseFloat(a.price) - parseFloat(b.price);
+		});
+
+		console.log(megaList);
+		bot.reply(message, megaList.slice(0, 3));
+	});
 });
 
 controller.hears(['uptime', 'identify yourself', 'who are you', 'what is your name'],
