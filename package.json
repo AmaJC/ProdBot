@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/AmaJC/ProdBot/issues"
   },
-  "homepage": "https://github.com/AmaJC/ProdBot#readme"
+  "homepage": "https://github.com/AmaJC/ProdBot#readme",
+  "dependencies": {
+    "request": "^2.78.0",
+    "watson-developer-cloud": "^2.8.1"
+  }
 }
