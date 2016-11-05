@@ -182,8 +182,12 @@ controller.hears(['best prices', 'cheapest prices', 'lowest prices'], 'direct_me
 					megaList.push(results[1][i]);
 				}
 
+				megaList.sort(function(a, b) {
+					return parseFloat(a.price) - parseFloat(b.price);
+				});
+
 				console.log(megaList);
-				convo.say(megaList);
+				convo.say(megaList.slice(0, 3));
 			});
 		}
 	})
