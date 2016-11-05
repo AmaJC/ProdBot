@@ -201,16 +201,6 @@ controller.hears(triggerWords, 'direct_message', function(bot, message) {
 			console.log(bodyText);
 			bot.reply(message, bodyText);
 		}
-
-		/*var mainBodyText = "";
-		for (var i = 0; i < bestList.length; i++) {
-			var item = bestList[i];
-			mainBodyText +=	(i + 1) + ". " + item.name + " - " + item.provider + "\n" + 
-							" - Price: " + item.price + "\n" + 
-							" - Link: " + item.url + "\n";
-		}
-		console.log(mainBodyText);
-		bot.reply(message, mainBodyText);*/
 	});
 });
 
@@ -224,15 +214,8 @@ controller.hears(['uptime', 'identify yourself', 'who are you', 'what is your na
 		'>. I have been running for ' + uptime + ' on ' + hostname + '.');
 });
 
-app.get('/', function (req, res) {
-	res.send('This chatbot is alive now!');
-})
-
 console.log("LeGaCy of TeJaCy");
 
 app.listen(PORT, function () {
 	console.log('Server listening on port ' + PORT + '!');
 });
-
-//walmartSearchItem("Skateboard Helmets");
-//ebaySearchItem("Skateboard Helmets");
