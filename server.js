@@ -44,7 +44,7 @@ var getProductEntity = function(inputText, callback) {
 			var responseText = "";
 
 			for (var i = 0; i < entities.length; i++) {
-				responseText += "Entity: " + JSON.stringify(entities[i], null, 2) + "\n";
+				responseText += "Entity: \n" + JSON.stringify(entities[i], null, 2) + "\n";
 			}
 
 			if (entities.length === 0) {
@@ -92,7 +92,7 @@ controller.hears(['best prices', 'cheapest prices', 'lowest prices'], 'direct_me
 			convo.say('DEBUG: message = ' + JSON.stringify(message, null, 4));
 
 			getProductEntity(message.text, (targetEntity) => {
-				convo.say("DEBUG: found target entity: " + targetEntity);
+				convo.say(targetEntity);
 			});
 		}
 	})
