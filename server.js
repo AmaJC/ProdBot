@@ -54,7 +54,7 @@ var ebaySearchItem = function(item, callback) {
 					"name": prod.title,
 					"price": "$" + prod.sellingStatus.currentPrice.amount,
 					"provider": "ebay",
-					"url": "http://www.ebay.com/itm/" + prod.title.replace(" ", "+"),
+					"url": "http://www.ebay.com/itm/" + prod.title.split(" ").join("+"),
 					"image": prod.galleryURL
 				});
 			}
@@ -151,7 +151,11 @@ bot.startRTM(function(err,bot,payload) {
 	}
 });
 
-controller.hears(['best prices', 'cheapest prices', 'lowest prices'], 'direct_message', function(bot, message) {
+var triggerWords = [
+	'best prices', 'cheapest prices', 'lowest prices',
+	'price', 'prices', 'lowest', 'cheapest','inexpensive'];
+
+controller.hears(triggerWords, 'direct_message', function(bot, message) {
 	var targetEntity = getProductEntity_ForDummies(message.text);
 	bot.reply(message, 'Searching for the best prices of ' + targetEntity + '...');
 
