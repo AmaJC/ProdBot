@@ -231,6 +231,10 @@ controller.hears(['uptime', 'identify yourself', 'who are you', 'what is your na
 		'>. I have been running for ' + uptime + ' on ' + hostname + '.');
 });
 
+app.get('/', function (req, res) {
+	res.send('This chatbot is alive now!');
+})
+
 console.log("LeGaCy of TeJaCy");
 
 app.listen(PORT, function () {
