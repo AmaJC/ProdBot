@@ -171,8 +171,7 @@ controller.hears(['best prices', 'cheapest prices', 'lowest prices'], 'direct_me
 						callback(null, list);
 					})
 				}
-			],
-			function(err, results) {
+			], function(err, results) {
 				var megaResultList = merge(results[0], results[1]);
 				convo.say(megaResultList);
 			});
