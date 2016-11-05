@@ -152,6 +152,7 @@ controller.hears(['best prices', 'cheapest prices', 'lowest prices'], 'direct_me
 			/*getProductEntity(message.text, (targetEntity) => {
 				convo.say(targetEntity);
 			});*/
+			
 			var targetEntity = getProductEntity_ForDummies(message.text);
 			convo.say("DEBUG: Entity: " + targetEntity);
 
@@ -185,7 +186,7 @@ controller.hears(['uptime', 'identify yourself', 'who are you', 'what is your na
 		'>. I have been running for ' + uptime + ' on ' + hostname + '.');
 });
 
-console.log("LeGaCy of TeJaCy"); 
+console.log("LeGaCy of TeJaCy");
 
 //walmartSearchItem("Skateboard Helmets");
 //ebaySearchItem("Skateboard Helmets");
