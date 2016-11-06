@@ -8,7 +8,7 @@ var ebay = require('ebay-api');
 
 var tokens = jsonfile.readFileSync("tokens.json");
 
-var walmart = require('walmart')(decrypt(tokens.ebay));
+var walmart = require('walmart')(decrypt(tokens.walmart));
 
 /*var watson = require('watson-developer-cloud');
 var alchemy_language = watson.alchemy_language({
