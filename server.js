@@ -1,19 +1,24 @@
+var crypto = require('crypto');
+var jsonfile = require('jsonfile');
 var async = require('async');
-
 var express = require("express");
 var app = express();
+var Botkit = require('botkit');
+var ebay = require('ebay-api');
+
+var tokens = jsonfile.readFileSync("tokens.json");
+
+var walmart = require('walmart')(decrypt(tokens.ebay));
 
 /*var watson = require('watson-developer-cloud');
 var alchemy_language = watson.alchemy_language({
-	api_key: 'a0980d6813f71ed464520f49f2ab0e0c90c2cc5b'
+	api_key: decrypt(tokens.watson)
 })*/
-
-var Botkit = require('botkit');
 
 var controller = Botkit.slackbot();
 
 var bot = controller.spawn({
-	token: "xoxb-100174057824-Z6jUqVDoZZkizvtp8v5k3ZDQ"
+	token: decrypt(tokens.slack)
 })
 
 const MAX_QUERY_ITEMS = 25;
@@ -21,15 +26,18 @@ const MAX_DISPLAY_ITEMS = 5;
 
 const PORT = process.env.PORT || 8080;
 
-var ebay = require('ebay-api');
-
-var walmart = require('walmart')("x8skm2cduv6h8znkr76as5ck");
+function decrypt(text){
+	var decipher = crypto.createDecipher('aes-256-ctr', 'A5sHCML2SFzf')
+	var dec = decipher.update(text, 'hex', 'utf8')
+	dec += decipher.final('utf8');
+	return dec;
+}
 
 var ebaySearchItem = function(item, callback) {
 	ebay.xmlRequest({
 		serviceName: 'Finding',
 		opType: 'findItemsByKeywords',
-		appId: 'TejasSha-ProdBot-SBX-dbff92a48-6a3cafaa', // FILL IN YOUR OWN APP KEY, GET ONE HERE: https://publisher.ebaypartnernetwork.com/PublisherToolsAPI
+		appId: decrypt(tokens.ebay),
 		params: {
 			keywords: item.split(" "),
 			
@@ -38,9 +46,8 @@ var ebaySearchItem = function(item, callback) {
 			}
 		},
 		sandbox: true,
-		parser: ebay.parseResponseJson // (default)
+		parser: ebay.parseResponseJson
 	},
-	// gets all the items together in a merged array
 	(error, itemsResponse) => {
 		if (error) {
 			console.log(error);
@@ -168,7 +175,7 @@ controller.hears(triggerWords, 'direct_message', function(bot, message) {
 		}
 	], function(err, results) {
 		console.log("FINISHED!!");
-		//bot.reply(message, "FINISHED!!");
+
 		var megaList = [];
 		
 		for (var i = 0; i < results[0].length; i++) {
@@ -182,9 +189,6 @@ controller.hears(triggerWords, 'direct_message', function(bot, message) {
 		megaList.sort(function(a, b) {
 			return parseFloat(a.price) - parseFloat(b.price);
 		});
-
-		console.log(JSON.stringify(megaList.slice(0, 3),null,4));
-		//bot.reply(message, JSON.stringify(megaList.slice(0, 3),null,4));
 		
 		const ACTUAL_DISPLAY_ITEMS = (MAX_DISPLAY_ITEMS > megaList.length ? megaList.length : MAX_DISPLAY_ITEMS);
 
